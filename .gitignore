@@ -1,0 +1,45 @@
+# IntelliJ IDEA project files
+.idea/
+*.iml
+*.ipr
+*.iws
+out/
+
+# Android Studio
+/captures
+
+# Eclipse project files
+.classpath
+.project
+.settings/
+
+# Gradle build
+.gradle/
+build/
+
+# smali-pkg
+/smali-*
+/distapks
+
+# Android build
+bin/
+gen/
+local.properties
+
+# NDK
+.externalNativeBuild
+.cxx
+
+# OS auto gen
+.DS_Store
+Thumbs.db
+
+# Temp files
+*.bak
+*.tmp
+*.temp
+*.vpp~*
+*.swp
+*.*~
+~*.*
+
