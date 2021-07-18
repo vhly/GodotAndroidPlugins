@@ -7,13 +7,13 @@ import com.flurry.android.Constants;
 import com.flurry.android.FlurryAgent;
 import com.flurry.android.FlurryPerformance;
 
+import org.godotengine.godot.Dictionary;
 import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.UsedByGodot;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Set;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
@@ -48,14 +48,16 @@ public class FlurryPlugin extends GodotPlugin {
     public void initSDK(String appKey, String channel, boolean isDebug) {
         Activity activity = getActivity();
         if (activity != null) {
-            new FlurryAgent.Builder()
-                    .withDataSaleOptOut(false) //CCPA - the default value is false
-                    .withCaptureUncaughtExceptions(true)
-                    .withIncludeBackgroundSessionsInMetrics(true)
-                    .withLogLevel(Log.VERBOSE)
-                    .withLogEnabled(isDebug)
-                    .withPerformanceMetrics(FlurryPerformance.ALL)
-                    .build(activity, appKey);
+            activity.runOnUiThread(() -> {
+                new FlurryAgent.Builder()
+                        .withDataSaleOptOut(false) //CCPA - the default value is false
+                        .withCaptureUncaughtExceptions(true)
+                        .withIncludeBackgroundSessionsInMetrics(true)
+                        .withLogLevel(Log.VERBOSE)
+                        .withLogEnabled(isDebug)
+                        .withPerformanceMetrics(FlurryPerformance.ALL)
+                        .build(activity, appKey);
+            });
         }
     }
 
@@ -111,13 +113,12 @@ public class FlurryPlugin extends GodotPlugin {
      * @param params  Dictionary&lt;String,String&gt;
      */
     @UsedByGodot
-    public void logEvent(String eventId, Dictionary<String, String> params) {
+    public void logEvent(String eventId, Dictionary params) {
         HashMap<String, String> map = new HashMap<>();
-        Enumeration<String> keys = params.keys();
-        while (keys.hasMoreElements()) {
-            String key = keys.nextElement();
-            String value = params.get(key);
-            map.put(key, value);
+        Set<String> keySet = params.keySet();
+        for (String key : keySet) {
+            Object o = params.get(key);
+            map.put(key, String.valueOf(o));
         }
         FlurryAgent.logEvent(eventId, map);
     }
@@ -140,13 +141,12 @@ public class FlurryPlugin extends GodotPlugin {
                            double price,
                            String currency,
                            String transactionId,
-                           Dictionary<String, String> params) {
+                           Dictionary params) {
         HashMap<String, String> map = new HashMap<>();
-        Enumeration<String> keys = params.keys();
-        while (keys.hasMoreElements()) {
-            String key = keys.nextElement();
-            String value = params.get(key);
-            map.put(key, value);
+        Set<String> keySet = params.keySet();
+        for (String key : keySet) {
+            Object o = params.get(key);
+            map.put(key, String.valueOf(o));
         }
         FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId, map);
     }
