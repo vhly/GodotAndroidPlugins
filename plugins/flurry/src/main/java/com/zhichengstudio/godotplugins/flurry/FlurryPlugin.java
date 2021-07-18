@@ -11,7 +11,9 @@ import org.godotengine.godot.Godot;
 import org.godotengine.godot.plugin.GodotPlugin;
 import org.godotengine.godot.plugin.UsedByGodot;
 
-import java.util.Map;
+import java.util.Dictionary;
+import java.util.Enumeration;
+import java.util.HashMap;
 
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
@@ -106,11 +108,18 @@ public class FlurryPlugin extends GodotPlugin {
      * 发送日志，并且配置参数
      *
      * @param eventId String
-     * @param params  Map&lt;String,String&gt;
+     * @param params  Dictionary&lt;String,String&gt;
      */
     @UsedByGodot
-    public void logEvent(String eventId, Map<String, String> params) {
-        FlurryAgent.logEvent(eventId, params);
+    public void logEvent(String eventId, Dictionary<String, String> params) {
+        HashMap<String, String> map = new HashMap<>();
+        Enumeration<String> keys = params.keys();
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement();
+            String value = params.get(key);
+            map.put(key, value);
+        }
+        FlurryAgent.logEvent(eventId, map);
     }
 
     /**
@@ -131,8 +140,15 @@ public class FlurryPlugin extends GodotPlugin {
                            double price,
                            String currency,
                            String transactionId,
-                           Map<String, String> params) {
-        FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId, params);
+                           Dictionary<String, String> params) {
+        HashMap<String, String> map = new HashMap<>();
+        Enumeration<String> keys = params.keys();
+        while (keys.hasMoreElements()) {
+            String key = keys.nextElement();
+            String value = params.get(key);
+            map.put(key, value);
+        }
+        FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId, map);
     }
 
     @UsedByGodot
