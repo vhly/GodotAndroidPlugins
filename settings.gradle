@@ -1,3 +1,6 @@
 rootProject.name = "GodotPlugins"
 include ':app'
+include ':godot-lib-3.3-release'
+include ':godot-lib-3.3-debug'
+include ':app'
 include ':plugins:flurry'

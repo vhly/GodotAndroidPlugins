@@ -3,4 +3,13 @@
     package="com.zhichengstudio.godotplugins.flurry"
     >
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application>
+        <meta-data
+            android:name="org.godotengine.plugin.v1.Flurry"
+            android:value="com.zhichengstudio.godotplugins.flurry.FlurryPlugin"
+            />
+    </application>
 </manifest>

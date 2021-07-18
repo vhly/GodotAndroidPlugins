@@ -35,4 +35,11 @@ dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    // Godot library
+    debugCompileOnly project(':godot-lib-3.3-debug')
+    releaseCompileOnly project(':godot-lib-3.3-release')
+
+    // Flurry use compileOnly, because gdap include dependence.
+    compileOnly 'com.flurry.android:analytics:12.13.0'
 }

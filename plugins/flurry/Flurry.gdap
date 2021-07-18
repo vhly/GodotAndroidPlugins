@@ -1,0 +1,8 @@
+[config]
+
+name="Flurry"
+binary_type="local"
+binary="flurry-release.aar"
+
+[dependencies]
+remote=["com.flurry.android:analytics:12.13.0"]
