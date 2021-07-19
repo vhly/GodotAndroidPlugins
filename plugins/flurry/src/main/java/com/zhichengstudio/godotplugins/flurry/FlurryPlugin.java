@@ -92,7 +92,10 @@ public class FlurryPlugin extends GodotPlugin {
      */
     @UsedByGodot
     public void logEvent(String eventId) {
-        FlurryAgent.logEvent(eventId);
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> FlurryAgent.logEvent(eventId));
+        }
     }
 
     /**
@@ -103,7 +106,11 @@ public class FlurryPlugin extends GodotPlugin {
      */
     @UsedByGodot
     public void logEvent(String eventId, boolean isTimed) {
-        FlurryAgent.logEvent(eventId, isTimed);
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> FlurryAgent.logEvent(eventId, isTimed));
+        }
+
     }
 
     /**
@@ -120,7 +127,11 @@ public class FlurryPlugin extends GodotPlugin {
             Object o = params.get(key);
             map.put(key, String.valueOf(o));
         }
-        FlurryAgent.logEvent(eventId, map);
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> FlurryAgent.logEvent(eventId, map));
+        }
+
     }
 
     /**
@@ -148,13 +159,22 @@ public class FlurryPlugin extends GodotPlugin {
             Object o = params.get(key);
             map.put(key, String.valueOf(o));
         }
-        FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId, map);
+
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> {
+                FlurryAgent.logPayment(productName, productId, quantity, price, currency, transactionId, map);
+            });
+        }
     }
 
     @UsedByGodot
     public void logError(String errorId,
                          String message,
                          String errorClass) {
-        FlurryAgent.onError(errorId, message, errorClass);
+        Activity activity = getActivity();
+        if (activity != null) {
+            activity.runOnUiThread(() -> FlurryAgent.onError(errorId, message, errorClass));
+        }
     }
 }
